@@ -168,9 +168,9 @@ def load_user(user_id):
     userid = session['user_id']
     print "session user_id %s" % session['user_id']
     print "user_id value %s" % int(user_id)
-    print dbsession.query(User).filter_by(id=userid)
-    print dbsession.query(User).filter_by(id=userid).first()
-    return dbsession.query(User).filter_by(id=userid).first()
+    user = dbsession.query(User).filter_by(id=userid).first()
+    print "User is defined as : %s" % user.name
+    return user
 
 
 
