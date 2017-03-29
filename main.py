@@ -133,7 +133,7 @@ def createUser():
 
                 print "User login is invoked!"
                 flash(render_template('success.html', successmsg=successmsg))
-                return redirect(url_for('main', token=s.dumps([user_created.id])))
+                return redirect(url_for('main'))
         else:
             error = "Please fill in all fields!"
             return render_template('register.html', alert=render_template('alert.html',errormsg=error))
