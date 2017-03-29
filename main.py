@@ -124,10 +124,13 @@ def createUser():
                 user = User(name=name, email=email, password=hPass, member_since=todayDate)
                 dbsession.add(user)
                 dbsession.commit()
+
                 print "Registering user: %s" % user.name
                 user_created = dbsession.query(User).filter_by(email=email).one()
                 successmsg = "Registration Successful! Welcome to Kaboong..."
+
                 login_user(user_created, remember=True)
+
                 print "User login is invoked!"
                 flash(render_template('success.html', successmsg=successmsg))
                 return redirect(url_for('main', token=s.dumps([user_created.id])))
