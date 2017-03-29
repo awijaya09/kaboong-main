@@ -112,8 +112,9 @@ def createUser():
 
                     #once user created, log them in directly
                     user_created = dbsession.query(User).filter_by(email=email).first()
-
-                    return redirect(url_for('login'))
+                    login_user(user_created, remember=True)
+                    print "User is logged in, current user is authenticated: %s" % current_user.is_authenticated
+                    return redirect(url_for('main', token=s.dumps([user_created.id])))
         else:
             error = "Please fill in all fields!"
             return render_template('register.html', alert=render_template('alert.html',errormsg=error))
@@ -167,7 +168,7 @@ def load_user(userid):
     return user
 
 @login_manager.request_loader
-def load_user(request):
+def load_user_from_request(request):
     if request.args.get('token'):
         userid = s.loads(token)
         return dbsession.query(User).filter_by(id=userid).first()
