@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect,jsonify, url_for, flash, abort
+from flask import Flask, render_template, request, redirect,jsonify, url_for, flash, abort, session
 from flask_login import LoginManager, login_required, login_user, logout_user, current_user
 import random, string
 from sqlalchemy import create_engine, asc
@@ -23,19 +23,19 @@ login_manager.login_view = 'login'
 engine = create_engine('mysql://obitsy:kiasu123@localhost/obitsy_db')
 Base.metadata.bind = engine
 DBSession = sessionmaker(bind=engine)
-session = DBSession()
+dbsession = DBSession()
 
 @login_manager.user_loader
 def load_user(userid):
     user_id = int(userid)
-    user = session.query(User).filter_by(id=user_id).first()
+    user = dbsession.query(User).filter_by(id=user_id).first()
     return user
 
 @login_manager.request_loader
 def load_user_from_request(request):
     if request.args.get('token'):
         userid = s.loads(token)
-        return session.query(User).filter_by(id=userid).first()
+        return dbsession.query(User).filter_by(id=userid).first()
     else:
         return None
 
@@ -50,7 +50,7 @@ def logout():
 #Routes to homepage
 @app.route('/')
 def main():
-    posts = session.query(Post).all()
+    posts = dbsession.query(Post).all()
     print "Current user is authenticated: %s" % current_user.is_authenticated
     print "Current user is Anonymous: %s" % current_user.is_anonymous
     return render_template('home.html', posts=posts)
@@ -73,7 +73,7 @@ def login():
         password = request.form['password']
         if email and password:
             error = "Invalid email/password!"
-            user = session.query(User).filter_by(email=email).first()
+            user = dbsession.query(User).filter_by(email=email).first()
             if user:
                 hPass = hash_str(password)
                 if user.password == hPass:
@@ -111,7 +111,7 @@ def createUser():
                 error = "Verify Password is not the same as Password!"
                 return render_template('register.html', name=name, email=email, alert=render_template('alert.html', errormsg=error))
 
-            checkUser = session.query(User).filter_by(email=email).first()
+            checkUser = dbsession.query(User).filter_by(email=email).first()
 
             if checkUser:
                 error = "Email has been used, please use other email"
@@ -122,10 +122,10 @@ def createUser():
                 hPass = hash_str(password)
                 todayDate = get_date()
                 user = User(name=name, email=email, password=hPass, member_since=todayDate)
-                session.add(user)
-                session.commit()
+                dbsession.add(user)
+                dbsession.commit()
                 print "Registering user: %s" % user.name
-                user_created = session.query(User).filter_by(email=email).one()
+                user_created = dbsession.query(User).filter_by(email=email).one()
                 successmsg = "Registration Successful! Welcome to Kaboong..."
                 login_user(user_created, remember=True)
                 print "User login is invoked!"
@@ -140,9 +140,9 @@ def createUser():
 @app.route('/user/<int:user_id>')
 def userProfile(user_id):
     if current_user.is_authenticated :
-        user = session.query(User).filter_by(id=user_id).first()
+        user = dbsession.query(User).filter_by(id=user_id).first()
         if current_user.id == user.id:
-            posts = session.query(Post).filter_by(user=user).all()
+            posts = dbsession.query(Post).filter_by(user=user).all()
             return render_template('user-profile.html', user=user, posts=posts)
         else:
             successmsg = "Sorry, you are not authorized to open other's profile"
