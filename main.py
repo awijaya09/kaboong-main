@@ -166,7 +166,7 @@ def createAds(post_id, user_id):
 @login_manager.user_loader
 def load_user(user_id):
     userid = session['user_id']
-    return dbsession.query(User).filter_by(id=int(user_id)).one()
+    return dbsession.query(User).filter_by(id=userid).one()
 
 
 if __name__ == '__main__':
