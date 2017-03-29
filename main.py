@@ -169,15 +169,6 @@ def load_user(user_id):
     user = dbsession.query(User).filter_by(id=user_id).first()
     return user
 
-@login_manager.request_loader
-def load_user_from_request(request):
-    if request.args.get('token'):
-        userid = s.loads(token)
-        print "request loader invoked, userid: %s" % userid
-        return dbsession.query(User).filter_by(id=userid).first()
-    else:
-        return None
-
 
 if __name__ == '__main__':
   app.debug = True
