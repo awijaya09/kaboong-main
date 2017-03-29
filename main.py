@@ -4,7 +4,13 @@ import random, string
 from sqlalchemy import create_engine, asc
 from sqlalchemy.orm import sessionmaker
 from database_setup import Base, User, Post, Ads, Family, Comment
-
+app = Flask(__name__)
+app.secret_key = 'kiasu_secret'
+#Connecting engine to local MySQL database named obitsy_db
+engine = create_engine('mysql://obitsy:kiasu123@localhost/obitsy_db')
+Base.metadata.bind = engine
+DBSession = sessionmaker(bind=engine)
+dbsession = DBSession()
 #securing registration
 from logic import hash_str, get_date, is_safe_url
 from itsdangerous import URLSafeSerializer
@@ -13,31 +19,10 @@ from logic import SECRET
 s = URLSafeSerializer(SECRET)
 
 #initializing flask app and login manager
-app = Flask(__name__)
-app.secret_key = 'kiasu_secret'
+
 login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = 'login'
-
-#Connecting engine to local MySQL database named obitsy_db
-engine = create_engine('mysql://obitsy:kiasu123@localhost/obitsy_db')
-Base.metadata.bind = engine
-DBSession = sessionmaker(bind=engine)
-dbsession = DBSession()
-
-@login_manager.user_loader
-def load_user(userid):
-    user_id = int(userid)
-    user = dbsession.query(User).filter_by(id=user_id).first()
-    return user
-
-@login_manager.request_loader
-def load_user(request):
-    if request.args.get('token'):
-        userid = s.loads(token)
-        return dbsession.query(User).filter_by(id=userid).first()
-    else:
-        return None
 
 @app.route('/logout')
 @login_required
@@ -182,6 +167,21 @@ def deletePost(post_id):
 @app.route('/post/<int:post_id>/createAds')
 def createAds(post_id, user_id):
     return "Create Ads for posts"
+
+@login_manager.user_loader
+def load_user(userid):
+    user_id = int(userid)
+    user = dbsession.query(User).filter_by(id=user_id).first()
+    return user
+
+@login_manager.request_loader
+def load_user(request):
+    if request.args.get('token'):
+        userid = s.loads(token)
+        return dbsession.query(User).filter_by(id=userid).first()
+    else:
+        return None
+
 
 if __name__ == '__main__':
   app.debug = True
