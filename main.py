@@ -163,14 +163,8 @@ def deletePost(post_id):
 def createAds(post_id, user_id):
     return "Create Ads for posts"
 
-@login_manager.user_loader
-def load_user(user_id):
-    userid = int(user_id)
-    user = dbsession.query(User).filter_by(id=user_id).first()
-    return user
-
 @login_manager.request_loader
-def load_user_from_request(request):
+def load_user(request):
     if request.args.get('token'):
         userid = s.loads(token)
         print "request loader invoked, userid: %s" % userid
