@@ -139,11 +139,15 @@ def createUser():
 
 @app.route('/user/<int:user_id>')
 def userProfile(user_id):
-    if current_user.is_authenticated:
+    if current_user.is_authenticated :
         user = session.query(User).filter_by(id=user_id).first()
         if current_user.id == user.id:
             posts = session.query(Post).filter_by(user=user).all()
             return render_template('user-profile.html', user=user, posts=posts)
+        else:
+            successmsg = "Sorry, you are not authorized to open other's profile"
+            flash(render_template('success.html', successmsg=successmsg))
+            return redirect(url_for('main'))
     else:
         return redirect(url_for('main'))
 
