@@ -129,10 +129,10 @@ def createUser():
                 user_created = dbsession.query(User).filter_by(email=email).one()
                 successmsg = "Registration Successful! Welcome to Kaboong..."
 
-                login_user(user_created, remember=True, force=True)
+                login_user(user_created, remember=True)
                 print "User login is invoked!"
                 flash(render_template('success.html', successmsg=successmsg))
-                return redirect(url_for('main'))
+                return redirect(url_for('main'), token=s.dumps([user_created.id]))
         else:
             error = "Please fill in all fields!"
             return render_template('register.html', alert=render_template('alert.html',errormsg=error))
