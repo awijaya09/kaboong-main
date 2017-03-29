@@ -129,8 +129,7 @@ def createUser():
                 user_created = dbsession.query(User).filter_by(email=email).one()
                 successmsg = "Registration Successful! Welcome to Kaboong..."
 
-                login_user(user_created, remember=True)
-                session['user_id'] = user_created.id
+                login_user(user_created, remember=True, force=True)
                 print "User login is invoked!"
                 flash(render_template('success.html', successmsg=successmsg))
                 return redirect(url_for('main'))
