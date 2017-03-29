@@ -162,8 +162,8 @@ def createAds(post_id, user_id):
     return "Create Ads for posts"
 
 @login_manager.user_loader
-def load_user(userid):
-    user_id = int(userid)
+def load_user(user_id):
+    userid = int(user_id)
     user = dbsession.query(User).filter_by(id=user_id).first()
     return user
 
