@@ -62,7 +62,7 @@ def login():
                 hPass = hash_str(password)
                 if user.password == hPass:
                     print "User found, password matched: %s" % user.name
-                    login_user(user, remember=True)
+                    login_user(user, remember=True, force=True)
                     print "User is logged in, current user is authenticated: %s" % current_user.is_authenticated
 
                     return redirect(url_for('main'))
@@ -112,7 +112,7 @@ def createUser():
 
                     #once user created, log them in directly
                     user_created = dbsession.query(User).filter_by(email=email).first()
-                    login_user(user_created, remember=True)
+                    login_user(user_created, remember=True, force=True)
                     print "User is logged in, current user is authenticated: %s" % current_user.is_authenticated
                     print "User is logged in, created user id: %s" % user_created.id
                     print "User is logged in, current user id: %s" % current_user.get_id()
@@ -165,9 +165,7 @@ def createAds(post_id, user_id):
 
 @login_manager.user_loader
 def load_user(user_id):
-    userid = int(user_id)
-    user = dbsession.query(User).filter_by(id=user_id).first()
-    return user
+    return dbsession.query(User).filter_by(id=int(user_id)).one()
 
 
 if __name__ == '__main__':
