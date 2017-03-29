@@ -25,12 +25,6 @@ Base.metadata.bind = engine
 DBSession = sessionmaker(bind=engine)
 dbsession = DBSession()
 
-@login_manager.user_loader
-def load_user(userid):
-    user_id = int(userid)
-    user = dbsession.query(User).filter_by(id=user_id).first()
-    return user
-
 @login_manager.request_loader
 def load_user_from_request(request):
     if request.args.get('token'):
@@ -53,7 +47,8 @@ def main():
     posts = dbsession.query(Post).all()
     print "Current user is authenticated: %s" % current_user.is_authenticated
     print "Current user is Anonymous: %s" % current_user.is_anonymous
-    print "Current user session id %s" % session['user_id']
+    if session['user_id']:
+        print "Current user session id %s" % session['user_id']
     return render_template('home.html', posts=posts)
 
 #Route to About us page
