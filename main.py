@@ -168,8 +168,10 @@ def load_user(user_id):
     userid = session['user_id']
     print "session user_id %s" % session['user_id']
     print "user_id value %s" % int(user_id)
-    print "Current user already here %s" % current_user.is_authenticated
-    return dbsession.query(User).filter_by(id=userid).one()
+    print dbsession.query(User).filter_by(id=userid)
+    print dbsession.query(User).filter_by(id=userid).first()
+    return dbsession.query(User).filter_by(id=userid).first()
+
 
 
 if __name__ == '__main__':
