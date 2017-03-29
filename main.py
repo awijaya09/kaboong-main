@@ -30,6 +30,7 @@ def load_user(userid):
 @login_manager.request_loader
 def load_user_from_request(request):
     if request.args.get('userid'):
+        userid = request.args.get('userid')
         return session.query(User).filter_by(id=userid).first()
     else:
         return None
