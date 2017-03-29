@@ -112,16 +112,8 @@ def createUser():
 
                     #once user created, log them in directly
                     user_created = dbsession.query(User).filter_by(email=email).first()
-                    if user_created:
-                        login_user(user_created, remember=True)
-                        print "User login is invoked!"
-                        print "User current authentication: %s" % current_user.is_authenticated
-                        successmsg = "Registration Successful! Welcome to Kaboong..."
-                        flash(render_template('success.html', successmsg=successmsg))
-                        return redirect(url_for('main', token=s.dumps([user_created.id])))
 
-                    else:
-                        return redirect(url_for('login'))
+                    return redirect(url_for('login'))
         else:
             error = "Please fill in all fields!"
             return render_template('register.html', alert=render_template('alert.html',errormsg=error))
