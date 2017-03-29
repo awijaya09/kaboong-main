@@ -27,6 +27,13 @@ def load_user(userid):
     user = session.query(User).filter_by(id=user_id).first()
     return user
 
+@login_manager.request_loader
+def load_user_from_request(request):
+    if request.args.get('userid'):
+        return session.query(User).filter_by(id=userid).first()
+    else:
+        return None
+
 @app.route('/logout')
 @login_required
 def logout():
@@ -75,7 +82,7 @@ def login():
                     if next == '/logout':
                         return redirect(url_for('main'))
 
-                    return redirect(url_for('main'))
+                    return redirect(url_for('main'), userid=user.id)
                 else:
                     return render_template('login.html', alert=render_template('alert.html', errormsg=error))
             else:
@@ -118,7 +125,7 @@ def createUser():
                 login_user(user_created, remember=True)
                 print "User login is invoked!"
                 flash(render_template('success.html', successmsg=successmsg))
-                return redirect(url_for('main'))
+                return redirect(url_for('main'), userid=user.id)
         else:
             error = "Please fill in all fields!"
             return render_template('register.html', alert=render_template('alert.html',errormsg=error))
