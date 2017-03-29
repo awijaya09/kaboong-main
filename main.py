@@ -168,6 +168,7 @@ def load_user(user_id):
     userid = session['user_id']
     print "session user_id %s" % session['user_id']
     print "user_id value %s" % int(user_id)
+    print "Current user already here %s" %current_user.id
     return dbsession.query(User).filter_by(id=userid).one()
 
 
