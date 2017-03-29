@@ -114,6 +114,8 @@ def createUser():
                     user_created = dbsession.query(User).filter_by(email=email).first()
                     login_user(user_created, remember=True)
                     print "User is logged in, current user is authenticated: %s" % current_user.is_authenticated
+                    print "User is logged in, created user id: %s" % user_created.id
+                    print "User is logged in, current user id: %s" % current_user.get_id()
                     return redirect(url_for('main', token=s.dumps([user_created.id])))
         else:
             error = "Please fill in all fields!"
@@ -171,6 +173,7 @@ def load_user(user_id):
 def load_user_from_request(request):
     if request.args.get('token'):
         userid = s.loads(token)
+        print "request loader invoked, userid: %s" % userid
         return dbsession.query(User).filter_by(id=userid).first()
     else:
         return None
