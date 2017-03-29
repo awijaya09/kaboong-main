@@ -47,8 +47,6 @@ def main():
     posts = dbsession.query(Post).all()
     print "Current user is authenticated: %s" % current_user.is_authenticated
     print "Current user is Anonymous: %s" % current_user.is_anonymous
-    if session['user_id']:
-        print "Current user session id %s" % session['user_id']
     return render_template('home.html', posts=posts)
 
 #Route to About us page
