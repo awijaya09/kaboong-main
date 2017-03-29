@@ -130,7 +130,7 @@ def createUser():
                 successmsg = "Registration Successful! Welcome to Kaboong..."
 
                 login_user(user_created, remember=True)
-
+                session['user_id'] = user_created.id
                 print "User login is invoked!"
                 flash(render_template('success.html', successmsg=successmsg))
                 return redirect(url_for('main'))
