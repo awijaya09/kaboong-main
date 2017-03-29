@@ -25,10 +25,7 @@ session = DBSession()
 def load_user(userid):
     user_id = int(userid)
     user = session.query(User).filter_by(id=user_id).first()
-    if user:
-        return user
-    else:
-        return None
+    return user
 
 @app.route('/logout')
 @login_required
@@ -43,6 +40,7 @@ def logout():
 def main():
     posts = session.query(Post).all()
     print "Current user is authenticated: %s" % current_user.is_authenticated
+    print "Current user is Anonymous: %s" % current_user.is_anonymous
     return render_template('home.html', posts=posts)
 
 #Route to About us page
