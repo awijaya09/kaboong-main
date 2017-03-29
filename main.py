@@ -65,7 +65,7 @@ def login():
                     login_user(user, remember=True)
                     print "User is logged in, current user is authenticated: %s" % current_user.is_authenticated
 
-                    return redirect(url_for('main', token=s.dumps([user.id])))
+                    return redirect(url_for('main'))
                 else:
                     error = "Invalid username/password"
                     return render_template('login.html', alert=render_template('alert.html', errormsg=error))
@@ -116,7 +116,7 @@ def createUser():
                     print "User is logged in, current user is authenticated: %s" % current_user.is_authenticated
                     print "User is logged in, created user id: %s" % user_created.id
                     print "User is logged in, current user id: %s" % current_user.get_id()
-                    return redirect(url_for('main', token=s.dumps([user_created.id])))
+                    return redirect(url_for('main'))
         else:
             error = "Please fill in all fields!"
             return render_template('register.html', alert=render_template('alert.html',errormsg=error))
@@ -171,5 +171,4 @@ def load_user(user_id):
 
 
 if __name__ == '__main__':
-  app.debug = True
-  app.run(host = '0.0.0.0')
+  app.run(host = '0.0.0.0', port=8000)
