@@ -7,6 +7,10 @@ from database_setup import Base, User, Post, Ads, Family, Comment
 
 #securing registration
 from logic import hash_str, get_date, is_safe_url
+from itsdangerous import URLSafeSerializer
+from logic import SECRET
+
+s = URLSafeSerializer(SECRET)
 
 #initializing flask app and login manager
 app = Flask(__name__)
@@ -29,8 +33,8 @@ def load_user(userid):
 
 @login_manager.request_loader
 def load_user_from_request(request):
-    if request.args.get('userid'):
-        userid = request.args.get('userid')
+    if request.args.get('token'):
+        userid = s.loads(token)
         return session.query(User).filter_by(id=userid).first()
     else:
         return None
@@ -81,9 +85,9 @@ def login():
                         return abort(400)
 
                     if next == '/logout':
-                        return redirect(url_for('main'))
+                        return redirect(url_for('main', token=s.dumps([userid])))
 
-                    return redirect(url_for('main', userid=user.id))
+                    return redirect(url_for('main', token=s.dumps([userid])))
                 else:
                     return render_template('login.html', alert=render_template('alert.html', errormsg=error))
             else:
@@ -126,7 +130,7 @@ def createUser():
                 login_user(user_created, remember=True)
                 print "User login is invoked!"
                 flash(render_template('success.html', successmsg=successmsg))
-                return redirect(url_for('main', userid=user.id))
+                return redirect(url_for('main', token=s.dumps([userid])))
         else:
             error = "Please fill in all fields!"
             return render_template('register.html', alert=render_template('alert.html',errormsg=error))
@@ -135,8 +139,8 @@ def createUser():
 
 @app.route('/user/<int:user_id>')
 def userProfile(user_id):
-    user = session.query(User).filter_by(id=user_id).first()
-    if user:
+    if current_user.is_authenticated:
+        user = session.query(User).filter_by(id=user_id).first()
         if current_user.id == user.id:
             posts = session.query(Post).filter_by(user=user).all()
             return render_template('user-profile.html', user=user, posts=posts)
