@@ -25,8 +25,14 @@ Base.metadata.bind = engine
 DBSession = sessionmaker(bind=engine)
 dbsession = DBSession()
 
+@login_manager.user_loader
+def load_user(userid):
+    user_id = int(userid)
+    user = dbsession.query(User).filter_by(id=user_id).first()
+    return user
+
 @login_manager.request_loader
-def load_user_from_request(request):
+def load_user(request):
     if request.args.get('token'):
         userid = s.loads(token)
         return dbsession.query(User).filter_by(id=userid).first()
@@ -66,26 +72,24 @@ def login():
         email = request.form['email']
         password = request.form['password']
         if email and password:
-            error = "Invalid email/password!"
             user = dbsession.query(User).filter_by(email=email).first()
             if user:
                 hPass = hash_str(password)
                 if user.password == hPass:
                     print "User found, password matched: %s" % user.name
                     login_user(user, remember=True)
-                    print "User is logged in, current user: %s" % current_user.is_authenticated
-                    next = request.args.get('next')
-                    if not is_safe_url(next):
-                        return abort(400)
-
-                    if next == '/logout':
-                        return redirect(url_for('main', token=s.dumps([user.id])))
+                    print "User is logged in, current user is authenticated: %s" % current_user.is_authenticated
 
                     return redirect(url_for('main', token=s.dumps([user.id])))
                 else:
+                    error = "Invalid username/password"
                     return render_template('login.html', alert=render_template('alert.html', errormsg=error))
             else:
+                error = "Please register before logging in!"
                 return render_template('login.html', alert=render_template('alert.html', errormsg=error))
+        else:
+            error = "Please fill in both email & password"
+            return render_template('login.html', alert=render_template('alert.html', errormsg=error))
 
     else:
         return render_template('login.html')
@@ -105,28 +109,34 @@ def createUser():
                 error = "Verify Password is not the same as Password!"
                 return render_template('register.html', name=name, email=email, alert=render_template('alert.html', errormsg=error))
 
-            checkUser = dbsession.query(User).filter_by(email=email).first()
-
-            if checkUser:
-                error = "Email has been used, please use other email"
-                return render_template('register.html', alert=render_template('alert.html', errormsg=error))
-
-            #Succesfully registering user
             else:
-                hPass = hash_str(password)
-                todayDate = get_date()
-                user = User(name=name, email=email, password=hPass, member_since=todayDate)
-                dbsession.add(user)
-                dbsession.commit()
+                checkUser = dbsession.query(User).filter_by(email=email).first()
 
-                print "Registering user: %s" % user.name
-                user_created = dbsession.query(User).filter_by(email=email).one()
-                successmsg = "Registration Successful! Welcome to Kaboong..."
+                if checkUser:
+                    error = "Email has been used, please use other email"
+                    return render_template('register.html',email=email, name=name, alert=render_template('alert.html', errormsg=error))
 
-                login_user(user_created, remember=True)
-                print "User login is invoked!"
-                flash(render_template('success.html', successmsg=successmsg))
-                return redirect(url_for('main', token=s.dumps([user_created.id])))
+                #Succesfully registering user
+                else:
+                    hPass = hash_str(password)
+                    todayDate = get_date()
+                    user = User(name=name, email=email, password=hPass, member_since=todayDate)
+                    dbsession.add(user)
+                    dbsession.commit()
+                    print "Registering user: %s" % user.name
+
+                    #once user created, log them in directly
+                    user_created = dbsession.query(User).filter_by(email=email).first()
+                    if user_created:
+                        login_user(user_created, remember=True)
+                        print "User login is invoked!"
+                        print "User current authentication: %s" % current_user.is_authenticated
+                        successmsg = "Registration Successful! Welcome to Kaboong..."
+                        flash(render_template('success.html', successmsg=successmsg))
+                        return redirect(url_for('main', token=s.dumps([user_created.id])))
+
+                    else:
+                        return redirect(url_for('login'))
         else:
             error = "Please fill in all fields!"
             return render_template('register.html', alert=render_template('alert.html',errormsg=error))
