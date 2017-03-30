@@ -58,20 +58,26 @@ def login():
         email = request.form['email']
         password = request.form['password']
         if email and password:
-            user = dbsession.query(User).filter_by(email=email).all()
-            if user:
-                hPass = hash_str(password)
-                if user.password == hPass:
-                    print "User found, password matched: %s" % user.name
-                    login_user(user, remember=True, force=True)
-                    print "User is logged in, current user is authenticated: %s" % current_user.is_authenticated
+            try:
+                user = dbsession.query(User).filter_by(email=email).one()
+                dbsession.flush()
+                if user:
+                    hPass = hash_str(password)
+                    if user.password == hPass:
+                        print "User found, password matched: %s" % user.name
+                        login_user(user, remember=True, force=True)
+                        print "User is logged in, current user is authenticated: %s" % current_user.is_authenticated
 
-                    return redirect(url_for('main'))
+                        return redirect(url_for('main'))
+                    else:
+                        error = "Invalid username/password"
+                        return render_template('login.html', alert=render_template('alert.html', errormsg=error))
                 else:
-                    error = "Invalid username/password"
+                    error = "Please register before logging in!"
                     return render_template('login.html', alert=render_template('alert.html', errormsg=error))
-            else:
-                error = "Please register before logging in!"
+            except:
+                dbsession.rollback()
+                error = "Trouble finding your email"
                 return render_template('login.html', alert=render_template('alert.html', errormsg=error))
         else:
             error = "Please fill in both email & password"
@@ -111,13 +117,18 @@ def createUser():
                     hPass = hash_str(password)
                     todayDate = get_date()
                     user = User(name=name, email=email, password=hPass, member_since=todayDate)
-                    dbsession.add(user)
-                    dbsession.commit()
-                    dbsession.flush()
-                    print "Registering user: %s" % user.name
-                    flash("Please login to continue!")
-                    #once user created, log them in directly
-                    user_created = dbsession.query(User).filter_by(email=email).one()
+                    try:
+                        dbsession.add(user)
+                        dbsession.commit()
+                        dbsession.flush()
+                        print "Registering user: %s" % user.name
+                        flash("Please login to continue!")
+                        #once user created, log them in directly
+                        user_created = dbsession.query(User).filter_by(email=email).one()
+                        return redirect(url_for('login'))
+                    except:
+                        dbsession.rollback()
+                        return redirect(url_for('createUser'))
 
 
                     #login_user(user_created, remember=True)
@@ -126,7 +137,6 @@ def createUser():
                     #print "User is logged in, current user id: %s" % current_user.get_id()
 
 
-                    return redirect(url_for('login'))
         else:
             error = "Please fill in all fields!"
             return render_template('register.html', alert=render_template('alert.html',errormsg=error))
@@ -176,12 +186,10 @@ def createAds(post_id, user_id):
 @login_manager.user_loader
 def load_user(user_id):
     print "load_user is invoke!"
-    userid = session['user_id']
-    print "session user_id %s" % session['user_id']
     print "user_id value %s" % int(user_id)
 
     print "Trying to get user..."
-    user = dbsession.query(User).filter_by(id=userid).first()
+    user = dbsession.query(User).get(int(user_id))
     dbsession.flush()
     return user
 
