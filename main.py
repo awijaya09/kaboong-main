@@ -58,7 +58,7 @@ def login():
         email = request.form['email']
         password = request.form['password']
         if email and password:
-            user = dbsession.query(User).filter_by(email=email).first()
+            user = dbsession.query(User).filter_by(email=email).all()
             if user:
                 hPass = hash_str(password)
                 if user.password == hPass:
@@ -100,7 +100,7 @@ def createUser():
                 return render_template('register.html', name=name, email=email, alert=render_template('alert.html', errormsg=error))
 
             else:
-                checkUser = dbsession.query(User).filter_by(email=email).first()
+                checkUser = dbsession.query(User).filter(User.email == email).first()
 
                 if checkUser:
                     error = "Email has been used, please use other email"
@@ -113,14 +113,19 @@ def createUser():
                     user = User(name=name, email=email, password=hPass, member_since=todayDate)
                     dbsession.add(user)
                     dbsession.commit()
+                    dbsession.flush()
                     print "Registering user: %s" % user.name
                     flash("Please login to continue!")
                     #once user created, log them in directly
-                    #user_created = dbsession.query(User).filter_by(email=email).one()
+                    user_created = dbsession.query(User).filter_by(email=email).one()
+
+
                     #login_user(user_created, remember=True)
                     #print "User is logged in, current user is authenticated: %s" % current_user.is_authenticated
                     #print "User is logged in, created user id: %s" % user_created.id
                     #print "User is logged in, current user id: %s" % current_user.get_id()
+
+
                     return redirect(url_for('login'))
         else:
             error = "Please fill in all fields!"
@@ -177,6 +182,7 @@ def load_user(user_id):
 
     print "Trying to get user..."
     user = dbsession.query(User).filter_by(id=userid).first()
+    dbsession.flush()
     return user
 
     #userq = dbsession.execute(text("SELECT user.id AS user_id, user.name AS user_name, user.email AS user_email, user.password AS$, user.is_authenticated FROM user WHERE user.id = :userid LIMIT :param ") , {'userid':userid, 'param':1})
