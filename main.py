@@ -78,7 +78,8 @@ def login():
             return render_template('login.html', alert=render_template('alert.html', errormsg=error))
 
     else:
-        successmsg = get_flashed_messages()[0]
+        if get_flashed_messages():
+            successmsg = get_flashed_messages()[0]
         return render_template('login.html', alert=render_template('success.html', successmsg=successmsg))
 
 #Routes to register a new user
@@ -174,7 +175,7 @@ def load_user(user_id):
 
     print "Trying to get user..."
     user = dbsession.query(User).filter_by(id=userid).first()
-
+    return user
 
     #userq = dbsession.execute(text("SELECT user.id AS user_id, user.name AS user_name, user.email AS user_email, user.password AS$, user.is_authenticated FROM user WHERE user.id = :userid LIMIT :param ") , {'userid':userid, 'param':1})
     #user = userq.fetchone()[0]
