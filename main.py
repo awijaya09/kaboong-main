@@ -78,7 +78,8 @@ def login():
             return render_template('login.html', alert=render_template('alert.html', errormsg=error))
 
     else:
-        return render_template('login.html')
+        successmsg = get_flashed_messages()[0]
+        return render_template('login.html', alert=render_template('success.html', successmsg=successmsg))
 
 #Routes to register a new user
 @app.route('/register', methods=['GET', 'POST'])
@@ -110,14 +111,14 @@ def createUser():
                     dbsession.add(user)
                     dbsession.commit()
                     print "Registering user: %s" % user.name
-
+                    flash("Please login to continue!")
                     #once user created, log them in directly
-                    user_created = dbsession.query(User).filter_by(email=email).one()
-                    login_user(user_created, remember=True)
-                    print "User is logged in, current user is authenticated: %s" % current_user.is_authenticated
-                    print "User is logged in, created user id: %s" % user_created.id
-                    print "User is logged in, current user id: %s" % current_user.get_id()
-                    return redirect(url_for('main'))
+                    #user_created = dbsession.query(User).filter_by(email=email).one()
+                    #login_user(user_created, remember=True)
+                    #print "User is logged in, current user is authenticated: %s" % current_user.is_authenticated
+                    #print "User is logged in, created user id: %s" % user_created.id
+                    #print "User is logged in, current user id: %s" % current_user.get_id()
+                    return redirect(url_for('login'))
         else:
             error = "Please fill in all fields!"
             return render_template('register.html', alert=render_template('alert.html',errormsg=error))
@@ -172,22 +173,12 @@ def load_user(user_id):
     print "user_id value %s" % int(user_id)
 
     print "Trying to get user..."
-    users = dbsession.query(User).filter_by(id=userid).all()
-    for user in users:
-        print "userid %s" % int(user_id)
-        print "User %s" % user.id
-        if user.id == int(user_id):
-            print "It goes in here"
-            return user
-        else:
-            return None
+    user = dbsession.query(User).filter_by(id=userid).first()
+
 
     #userq = dbsession.execute(text("SELECT user.id AS user_id, user.name AS user_name, user.email AS user_email, user.password AS$, user.is_authenticated FROM user WHERE user.id = :userid LIMIT :param ") , {'userid':userid, 'param':1})
     #user = userq.fetchone()[0]
     #print "User object : %s" % user
 
-
-
 if __name__ == '__main__':
-    app.debug=True
-    app.run(host = '0.0.0.0', port=8000)
+    app.run(host = '0.0.0.0')
