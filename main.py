@@ -60,7 +60,6 @@ def login():
         if email and password:
             try:
                 user = dbsession.query(User).filter_by(email=email).one()
-                dbsession.flush()
                 if user:
                     hPass = hash_str(password)
                     if user.password == hPass:
@@ -120,7 +119,6 @@ def createUser():
                     try:
                         dbsession.add(user)
                         dbsession.commit()
-                        dbsession.flush()
                         print "Registering user: %s" % user.name
                         flash("Please login to continue!")
                         #once user created, log them in directly
@@ -190,7 +188,6 @@ def load_user(user_id):
 
     print "Trying to get user..."
     user = dbsession.query(User).get(int(user_id))
-    dbsession.flush()
     return user
 
     #userq = dbsession.execute(text("SELECT user.id AS user_id, user.name AS user_name, user.email AS user_email, user.password AS$, user.is_authenticated FROM user WHERE user.id = :userid LIMIT :param ") , {'userid':userid, 'param':1})
