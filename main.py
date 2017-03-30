@@ -2,6 +2,7 @@ from flask import Flask, render_template, request, redirect,jsonify, url_for, fl
 from flask_login import LoginManager, login_required, login_user, logout_user, current_user
 import random, string
 from sqlalchemy import create_engine, asc
+from sqlalchemy.sql import text
 from sqlalchemy.orm import sessionmaker
 from database_setup import Base, User, Post, Ads, Family, Comment
 app = Flask(__name__)
@@ -111,8 +112,8 @@ def createUser():
                     print "Registering user: %s" % user.name
 
                     #once user created, log them in directly
-                    user_created = dbsession.query(User).filter_by(email=email).first()
-                    login_user(user_created, remember=True, force=True)
+                    user_created = dbsession.query(User).filter_by(email=email).one()
+                    login_user(user_created, remember=True)
                     print "User is logged in, current user is authenticated: %s" % current_user.is_authenticated
                     print "User is logged in, created user id: %s" % user_created.id
                     print "User is logged in, current user id: %s" % current_user.get_id()
@@ -171,19 +172,22 @@ def load_user(user_id):
     print "user_id value %s" % int(user_id)
 
     print "Trying to get user..."
-    #user = dbsession.query(User).filter_by(id=userid).first()
-    user = session.execute("SELECT user.id AS user_id, user.name AS user_name, user.email AS user_email, user.password AS$ FROM user WHERE user.id = %s LIMIT %s;" , (userid, 1))
-    print user
-    counter = 0
-    while user is None:
-        print "User not found, trying to find again"
-        counter = counter + 1
-        user = dbsession.query(User).filter_by(id=userid).first()
+    users = dbsession.query(User).filter_by(id=userid).all()
+    for user in users:
+        print "userid %s" % int(user_id)
+        print "User %s" % user.id
+        if user.id == int(user_id):
+            print "It goes in here"
+            return user
+        else:
+            return None
 
-    print counter
-    return user
+    #userq = dbsession.execute(text("SELECT user.id AS user_id, user.name AS user_name, user.email AS user_email, user.password AS$, user.is_authenticated FROM user WHERE user.id = :userid LIMIT :param ") , {'userid':userid, 'param':1})
+    #user = userq.fetchone()[0]
+    #print "User object : %s" % user
 
 
 
 if __name__ == '__main__':
-  app.run(host = '0.0.0.0', port=8000)
+    app.debug=True
+    app.run(host = '0.0.0.0', port=8000)
