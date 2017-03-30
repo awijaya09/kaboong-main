@@ -171,7 +171,9 @@ def load_user(user_id):
     print "user_id value %s" % int(user_id)
 
     print "Trying to get user..."
-    user = dbsession.query(User).filter_by(id=userid).first()
+    #user = dbsession.query(User).filter_by(id=userid).first()
+    user = session.execute("SELECT user.id AS user_id, user.name AS user_name, user.email AS user_email, user.password AS$ FROM user WHERE user.id = %s LIMIT %s;" , (userid, 1))
+    print user
     counter = 0
     while user is None:
         print "User not found, trying to find again"
