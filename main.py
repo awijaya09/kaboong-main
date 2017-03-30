@@ -60,7 +60,7 @@ def login():
         password = request.form['password']
         if email and password:
             try:
-                dbsession.commit()
+                dbsession.rollback()
                 user = dbsession.query(User).filter_by(email=email).one()
                 if user:
                     hPass = hash_str(password)
@@ -147,6 +147,7 @@ def userProfile(user_id):
     if current_user.is_authenticated :
         user = dbsession.query(User).filter_by(id=user_id).first()
         if current_user.id == user.id:
+
             posts = dbsession.query(Post).filter_by(user=user).all()
             return render_template('user-profile.html', user=user, posts=posts)
         else:
@@ -188,7 +189,7 @@ def load_user(user_id):
     print "user_id value %s" % int(user_id)
 
     print "Trying to get user..."
-    dbsession.commit()
+    dbsession.rollback()
     user = dbsession.query(User).get(int(user_id))
     return user
 
