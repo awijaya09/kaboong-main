@@ -80,7 +80,9 @@ def login():
     else:
         if get_flashed_messages():
             successmsg = get_flashed_messages()[0]
-        return render_template('login.html', alert=render_template('success.html', successmsg=successmsg))
+            return render_template('login.html', alert=render_template('success.html', successmsg=successmsg))
+        else:
+             return render_template('login.html')
 
 #Routes to register a new user
 @app.route('/register', methods=['GET', 'POST'])
