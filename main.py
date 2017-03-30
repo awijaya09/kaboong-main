@@ -165,11 +165,20 @@ def createAds(post_id, user_id):
 
 @login_manager.user_loader
 def load_user(user_id):
+    print "load_user is invoke!"
     userid = session['user_id']
     print "session user_id %s" % session['user_id']
     print "user_id value %s" % int(user_id)
+
+    print "Trying to get user..."
     user = dbsession.query(User).filter_by(id=userid).first()
-    print "User is defined as : %s" % user.name
+    counter = 0
+    while user is None:
+        print "User not found, trying to find again"
+        counter = counter + 1
+        user = dbsession.query(User).filter_by(id=userid).first()
+
+    print counter
     return user
 
 
