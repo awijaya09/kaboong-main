@@ -5,6 +5,7 @@ from sqlalchemy import create_engine, asc
 from sqlalchemy.sql import text
 from sqlalchemy.orm import sessionmaker
 from database_setup import Base, User, Post, Ads, Family, Comment
+
 app = Flask(__name__)
 app.secret_key = 'kiasu_secret'
 #Connecting engine to local MySQL database named obitsy_db
@@ -59,6 +60,7 @@ def login():
         password = request.form['password']
         if email and password:
             try:
+                dbsession.commit()
                 user = dbsession.query(User).filter_by(email=email).one()
                 if user:
                     hPass = hash_str(password)
@@ -123,17 +125,16 @@ def createUser():
                         flash("Please login to continue!")
                         #once user created, log them in directly
                         user_created = dbsession.query(User).filter_by(email=email).one()
-                        return redirect(url_for('login'))
+
+                        print "User is logged in, current user is authenticated: %s" % current_user.is_authenticated
+                        print "User is logged in, created user id: %s" % user_created.id
+                        print "User is logged in, current user id: %s" % current_user.get_id()
+                        login_user(user_created, remember=True)
+                        return redirect(url_for('main'))
+
                     except:
                         dbsession.rollback()
                         return redirect(url_for('createUser'))
-
-
-                    #login_user(user_created, remember=True)
-                    #print "User is logged in, current user is authenticated: %s" % current_user.is_authenticated
-                    #print "User is logged in, created user id: %s" % user_created.id
-                    #print "User is logged in, current user id: %s" % current_user.get_id()
-
 
         else:
             error = "Please fill in all fields!"
@@ -187,6 +188,7 @@ def load_user(user_id):
     print "user_id value %s" % int(user_id)
 
     print "Trying to get user..."
+    dbsession.commit()
     user = dbsession.query(User).get(int(user_id))
     return user
 
