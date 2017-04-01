@@ -60,6 +60,6 @@ class Comment(Base):
     user = relationship(User)
     date_posted = Column(String(250), nullable=False)
 
-engine = create_engine('mysql://obitsy:kiasu123@localhost/obitsy_db')
+engine = create_engine('mysql://obitsy:Kiasu123@localhost/obitsy_db')
 
 Base.metadata.create_all(engine)

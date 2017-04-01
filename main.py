@@ -9,7 +9,7 @@ from database_setup import Base, User, Post, Ads, Family, Comment
 app = Flask(__name__)
 app.secret_key = 'kiasu_secret'
 #Connecting engine to local MySQL database named obitsy_db
-engine = create_engine('mysql://obitsy:kiasu123@localhost/obitsy_db', echo=True)
+engine = create_engine('mysql://obitsy:Kiasu123@localhost/obitsy_db', echo=True)
 Base.metadata.bind = engine
 DBSession = sessionmaker(bind=engine)
 dbsession = DBSession()
