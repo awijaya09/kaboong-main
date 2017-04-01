@@ -9,7 +9,7 @@ from database_setup import Base, User, Post, Ads, Family, Comment
 app = Flask(__name__)
 app.secret_key = 'kiasu_secret'
 #Connecting engine to local MySQL database named obitsy_db
-engine = create_engine('mysql://obitsy:Kiasu123@localhost/obitsy_db', echo=True)
+engine = create_engine('mysql://obitsy:kiasu123@localhost/obitsy_db', echo=True)
 Base.metadata.bind = engine
 DBSession = sessionmaker(bind=engine)
 dbsession = DBSession()
@@ -58,6 +58,8 @@ def login():
     if request.method == 'POST':
         email = request.form['email']
         password = request.form['password']
+        remember = request.form['remember']
+
         if email and password:
             try:
                 dbsession.rollback()
@@ -66,7 +68,11 @@ def login():
                     hPass = hash_str(password)
                     if user.password == hPass:
                         print "User found, password matched: %s" % user.name
-                        login_user(user, remember=True, force=True)
+                        if remember:
+                            login_user(user, remember=True)
+                        else:
+                            login_user(user, remember=False)
+
                         print "User is logged in, current user is authenticated: %s" % current_user.is_authenticated
 
                         return redirect(url_for('main'))
@@ -121,14 +127,9 @@ def createUser():
                     try:
                         dbsession.add(user)
                         dbsession.commit()
-                        print "Registering user: %s" % user.name
-                        flash("Please login to continue!")
+
                         #once user created, log them in directly
                         user_created = dbsession.query(User).filter_by(email=email).one()
-
-                        print "User is logged in, current user is authenticated: %s" % current_user.is_authenticated
-                        print "User is logged in, created user id: %s" % user_created.id
-                        print "User is logged in, current user id: %s" % current_user.get_id()
                         login_user(user_created, remember=True)
                         return redirect(url_for('main'))
 
@@ -198,4 +199,5 @@ def load_user(user_id):
     #print "User object : %s" % user
 
 if __name__ == '__main__':
+    #app.debug = True
     app.run(host = '0.0.0.0')

@@ -34,6 +34,30 @@
     padding:50px 0 50px 0;
     text-align: center;
 }
+.custom-page-title {
+    text-align: center;
+}
+
+.custom-checkbox {
+    width:20px !important;
+}
+
+@media (min-width: 992px) {
+    .top-login-btn{
+        min-width: 100px;
+        text-align: center;
+    }
+
+    .top-register-btn{
+        min-width: 100px;
+        text-align: center;
+    }
+
+    .menu-item-custom{
+        color:black !important;
+    }
+}
+
 
 /*---------- GLOBAL STYLES ----------*/
 html {
@@ -48,7 +72,7 @@ body {
 }
 body {
     line-height: 1.4em;
-    font-family: "Open Sans", sans-serif;
+    font-family: "Poppins", sans-serif;
     color: #292929;
     opacity: 0;
     -webkit-font-smoothing: subpixel-antialiased;
@@ -577,6 +601,7 @@ nav a {cursor: pointer}
     }
     nav>.container {
         padding-top: 0px;
+        padding-right: 0px;
     }
     nav.nav-small>.container {
         padding-top: 0px;
@@ -601,9 +626,9 @@ nav a {cursor: pointer}
     }
     .nav>li>a {
         display: inline-block;
-        font-family: 'lovelo',sans-serif;
+        font-family: 'Poppins',sans-serif;
         font-size: 12.4px;
-        text-transform: uppercase;
+        /*text-transform: uppercase;*/
         letter-spacing: 1px;
         padding-bottom: 8px;
     }
@@ -754,7 +779,7 @@ nav a {cursor: pointer}
         border-right: 0px;
     }
     .megamenu-content .mg-col h5 {
-        font-family: "lovelo", sans-serif;
+        font-family: "Poppins", sans-serif;
         font-size: 12px;
         color: #ccc;
         letter-spacing: 1px;
@@ -776,7 +801,7 @@ nav a {cursor: pointer}
         margin-bottom: 10px;
         font-weight: 700;
         line-height: 1.4;
-        font-family: "lovelo", sans-serif;
+        font-family: "Poppins", sans-serif;
     }
     .megamenu .mega-col-title:hover {
         background-color: transparent!important;
@@ -989,7 +1014,7 @@ nav.navbar.nav-grey {
 }
 .btn-nav-checkout,
 .btn-nav-cart {
-    font-family: "Open Sans", sans-serif!important;
+    font-family: "Poppins", sans-serif!important;
     font-weight: 400!important;
     font-size: 12px!important;
     letter-spacing: 0!important;
@@ -1295,7 +1320,7 @@ nav.navbar.nav-grey {
         width: 14px;
         height: 14px;
         padding: 3px 0 0 5px;
-        font-family: "Open Sans", sans-serif;
+        font-family: "Poppins", sans-serif;
         font-weight: 900;
         font-size: 8px;
         color: #fff;
@@ -1499,7 +1524,7 @@ nav.navbar.nav-grey {
         opacity: 0;
     }
     .navbar-default.transparent.dark-menu .navbar-nav>li>a {
-        color: #333!important;
+        color: #333;
         font-size: 12px;
         font-weight: normal;
         letter-spacing: 0px;
@@ -1517,7 +1542,7 @@ nav.navbar.nav-grey {
 
 /*---------- TYPOGRAPHY ----------*/
 h1, h2, h3, h4, h5, h6 {
-	font-family: 'Raleway', sans-serif;
+	font-family: 'Poppins', sans-serif;
 	font-weight: 300;
 	line-height: 1.1;
     color: #191a1c;
@@ -1567,26 +1592,26 @@ h6 small {
     line-height: 1;
 }
 p {
-    font-family: 'Open Sans', sans-serif;
+    font-family: 'Poppins', sans-serif;
 	font-size: 14px;
     line-height: 1.75;
 	font-weight: 300;
     color: #888;
 }
 .lead {
-    font-family: 'Raleway', sans-serif;
+    font-family: 'Poppins', sans-serif;
 	font-weight: 300;
 }
 .lead-2 {
     font-size: 16px;
     line-height: 1.7;
-    font-family: 'Raleway',sans-serif;
+    font-family: 'Poppins',sans-serif;
     font-weight: 400;
 }
 .lead-3 {
     font-size: 20px;
     line-height: 1.7;
-    font-family: 'Raleway',sans-serif;
+    font-family: 'Poppins',sans-serif;
     font-weight: 400;
 }
 .lead-4 {
@@ -1710,7 +1735,7 @@ hr.separator {
 hr.separator.left {margin: 28px auto 25px 0}
 hr.separator.right {margin: 28px 0 25px auto}
 .section-heading p2 {
-    font-family: "Raleway", sans-serif;
+    font-family: "Poppins", sans-serif;
     font-weight: 200;
     font-size: 18px;
     color: #777777;
@@ -1742,11 +1767,11 @@ h5 strong,
 h6 strong,
 a strong,
 .bold {
-    font-family: "lovelo", sans-serif;
+    font-family: "Poppins", sans-serif;
     font-weight: normal;
 }
 .subheading {
-    font-family: "lovelo", sans-serif;
+    font-family: "Poppins", sans-serif;
     font-size: 12px;
     letter-spacing: 2px;
     font-weight: 400;
@@ -1861,7 +1886,7 @@ a:hover .subheading {
 
 /*---------- BUTTONS ----------*/
 .btn {
-    font-family: 'lovelo', sans-serif;
+    font-family: 'Poppins', sans-serif;
     font-size: 11px;
     font-weight: normal;
     text-transform: uppercase;
@@ -2308,7 +2333,7 @@ fieldset[disabled] .btn-primary.active, fieldset[disabled] .btn-primary.focus, f
     vertical-align: middle;
 }
 .alert strong {
-    font-family: 'lovelo', sans-serif;
+    font-family: 'Poppins', sans-serif;
     font-size: 10px;
     text-transform: uppercase;
     font-weight: 400;
@@ -2718,7 +2743,7 @@ ul {
     left: 50%;
     font-size: 18px;
     line-height: 1.4;
-    font-family: "Raleway", sans-serif;
+    font-family: "Poppins", sans-serif;
     transform: translate(-50%, -50%);
     content: attr(data-circle-text);
 }
@@ -2760,7 +2785,7 @@ ul {
     }
 }
 .nav-tabs>li>a {
-    font-family: 'lovelo', sans-serif;
+    font-family: 'Poppins', sans-serif;
     font-size: 12px;
     color: #888;
     cursor: default;
@@ -2815,7 +2840,7 @@ ul {
     color: #47494e;
     text-transform: none;
     font-size: 12px;
-    font-family: "lovelo", sans-serif;
+    font-family: "Poppins", sans-serif;
     font-weight: normal;
     letter-spacing: 1px;
     transition: color 0.35s;
@@ -3233,12 +3258,12 @@ ul {
     border: 2px solid #444;
 }
 .price-box h4 {
-    font-family: "lovelo", sans-serif;
+    font-family: "Poppins", sans-serif;
     font-size: 18px;
     letter-spacing: 2px;
 }
 .price-box h2 {
-    font-family: "lovelo", sans-serif;
+    font-family: "Poppins", sans-serif;
     font-size:
 }
 .price-box h2 sup {
@@ -3482,7 +3507,7 @@ ul {
     display: inline-block;
 }
 .quotes h2:before {
-    font-family: "Open Sans", sans-serif;
+    font-family: "Poppins", sans-serif;
     content: open-quote;
     font-size: 42px;
     vertical-align: 5px;
@@ -3490,7 +3515,7 @@ ul {
     color: #eee;
 }
 .quotes h2:after {
-    font-family: "Open Sans", sans-serif;
+    font-family: "Poppins", sans-serif;
     content: close-quote;
     font-size: 42px;
     vertical-align: 5px;
@@ -3622,14 +3647,14 @@ ul {
     color: #eee;
 }
 .testimonials h4:before {
-    font-family: "Open Sans", sans-serif;
+    font-family: "Poppins", sans-serif;
     content: open-quote;
     font-size: 32px;
     vertical-align: -5px;
     margin-right: 5px;
 }
 .testimonials h4:after {
-    font-family: "Open Sans", sans-serif;
+    font-family: "Poppins", sans-serif;
     content: close-quote;
     font-size: 32px;
     vertical-align: -5px;
@@ -3671,7 +3696,7 @@ ul {
 .about-quote:after {
     content: "Atelier";
     position: absolute;
-    font-family: "lovelo", sans-serif;
+    font-family: "Poppins", sans-serif;
     left: 0px;
     background: transparent;
     color: #777;
@@ -4058,7 +4083,7 @@ ul {
     font-size: 12px;
     color: #777;
     width: 220px;
-    font-family: "Open Sans";
+    font-family: "Poppins";
     font-weight: 300;
     letter-spacing: 0;
 }
@@ -4153,7 +4178,7 @@ textarea {
 
 .contact input.submit {
     width: auto;
-	font-family: 'lovelo', sans-serif;
+	font-family: 'Poppins', sans-serif;
     font-size: 12px;
     font-weight: normal;
     color: #fff;
@@ -4203,7 +4228,7 @@ border-bottom:1px dotted #ccc;
     margin: 20px 0 40px 0;
 }
 .side-info h5 {
-    font-family: "lovelo", sans-serif;
+    font-family: "Poppins", sans-serif;
     font-size: 14px;
 }
 .contact-box {
@@ -4498,7 +4523,7 @@ footer p {
 }
 .read-more-link span {
     padding-left: 0;
-    font-family: "lovelo", sans-serif;
+    font-family: "Poppins", sans-serif;
     font-size: 12px;
     color: #191a1c;
     margin-top: 14px;
@@ -4576,7 +4601,7 @@ footer p {
     border-bottom: none;
 }
 .blog-widget h5 {
-    font-family: "lovelo", sans-serif;
+    font-family: "Poppins", sans-serif;
     font-size: 14px;
 }
 .tags-list {
@@ -4635,7 +4660,7 @@ footer p {
 .blog-pagination li a {
     background-color: transparent;
     border: none;
-    font-family: "lovelo", sans-serif;
+    font-family: "Poppins", sans-serif;
     font-size: 12px;
     color: #191a1c;
     position: relative;
@@ -4710,7 +4735,7 @@ footer p {
 }
 .post-date .day,
 .post-date .year {
-    font-family: "lovelo", sans-serif;
+    font-family: "Poppins", sans-serif;
     margin: 0;
 }
 .blog-standard .post-content {
@@ -4785,7 +4810,7 @@ blockquote {
 .comments .comment-reply {
     position: absolute;
     right: 0;
-    font-family: "lovelo", sans-serif;
+    font-family: "Poppins", sans-serif;
     font-size: 12px;
     color: #191a1c;
 }
@@ -4809,7 +4834,7 @@ blockquote {
 }
 .comments .comment-heading span {
     font-size: 11px;
-    font-family: "Open Sans", sans-serif;
+    font-family: "Poppins", sans-serif;
     font-weight: 400;
     margin-right: 10px;
 }
@@ -4846,7 +4871,7 @@ blockquote {
 }
 /* Shop Grid Item */
 .product-details h4 {
-    font-family: "lovelo", sans-serif;
+    font-family: "Poppins", sans-serif;
 }
 .product-details {
     z-index: 3;
@@ -4905,7 +4930,7 @@ blockquote {
     margin: 5px;
     padding: 14px 20px 14px 16px;
     background-color: rgba(255,255,255,0.86);
-    font-family: "lovelo", sans-serif;
+    font-family: "Poppins", sans-serif;
     font-size: 12px;
     color: #191a1c;
     z-index: 3;
@@ -4922,7 +4947,7 @@ blockquote {
     margin-bottom: 40px;
 }
 .shop-widget h5 {
-    font-family: "lovelo", sans-serif;
+    font-family: "Poppins", sans-serif;
     font-size: 14px;
 }
 .tags-list {
@@ -5036,7 +5061,7 @@ blockquote {
 }
 .cart-item .item-action {
     display: block;
-    font-family: "lovelo", sans-serif;
+    font-family: "Poppins", sans-serif;
     font-size: 12px;
     margin: 5px 0;
 }
@@ -5081,7 +5106,7 @@ blockquote {
     margin-top: 20px;
 }
 .cart_totals h5 {
-    font-family: "lovelo", sans-serif;
+    font-family: "Poppins", sans-serif;
     font-size: 12px;
     color: #fff;
 }
@@ -5420,7 +5445,7 @@ section {
 #countdown-timer h1,
 #countdown-timer h2,
 #countdown-timer h6 {
-    font-family: "lovelo", sans-serif;
+    font-family: "Poppins", sans-serif;
     font-weight: normal;
     line-height: 1;
 }
@@ -5471,7 +5496,7 @@ section {
 /*---- Home Event ----*/
 .event-speakers {text-align: center}
 .event-speakers h4 {
-    font-family: "lovelo", sans-serif;
+    font-family: "Poppins", sans-serif;
     font-size: 15px;
     margin-top: 20px;
     margin-bottom: 0;
@@ -5511,7 +5536,7 @@ section {
 	background: #fff;
 }
 .timeline-content h2 {
-    font-family: "lovelo", sans-serif;
+    font-family: "Poppins", sans-serif;
     font-size: 14px;
     line-height: 1.0;
     margin-top: 0;

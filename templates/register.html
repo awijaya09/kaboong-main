@@ -1,22 +1,14 @@
 {% extends "base.html" %}
 
 {% block content %}
-<section class="page-title parallax bg-img-1">
-    <div class="page-title-content">
-        <div class="container">
-            <div class="col-sm-12 text-center white">
-                <h1>Register Now!</h1>
-                <hr class="separator">
-                <h5 class="subheading">Start showing your condolences!</h5>
-            </div>
-        </div>
-    </div>
-</section>
 <section class="pt100 pb90">
     <div class="container">
         <div class="row">
             <div class="col-md-3"></div>
             <div class="contact col-md-6">
+                <div class="custom-page-title mb90">
+                    <h3>Bergabung untuk Berkabung</h3>
+                </div>
                 <div id="message"></div>
                 {{ alert | safe }}
                 <!-- Contact Form will be functional only on your server. Upload to your server when testing. -->
@@ -32,7 +24,7 @@
                         <label for="confirmpswd">Confirm Password:</label>
                         <input name="confirmpswd" type="password" id="confirmpswd" placeholder="Confirm Password*"/>
                     </div>
-                    <input type="submit" class="submit btn btn-md btn-primary" id="submit" value="Register Now" />
+                    <input type="submit" class="btn btn-dark btn-fullwidth" id="submit" value="Register Now" />
                 </form>
             </div>
         </div>

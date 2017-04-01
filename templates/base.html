@@ -13,11 +13,12 @@
     <link href="/static/css/themify-icons.css" rel="stylesheet" type="text/css">
     <link href="/static/fonts/lovelo/stylesheet.css" rel="stylesheet" type="text/css">
     <link href='https://fonts.googleapis.com/css?family=Raleway:100,200,300,400%7COpen+Sans:400,300' rel='stylesheet' type='text/css'>
+    <link href="https://fonts.googleapis.com/css?family=Poppins" rel="stylesheet">
     <link href="/static/css/custom.css" rel="stylesheet" type="text/css">
-    <link href="/static/css/colors/blue.css" id="color-scheme" rel="stylesheet" type="text/css">
+    <link href="/static/css/colors/midnight.css" id="color-scheme" rel="stylesheet" type="text/css">
 </head>
 <body>
-<nav class="navbar navbar-default fullwidth transparent dark-menu">
+<nav class="navbar navbar-default fullwidth dark-menu">
     <div class="container">
         <div class="navbar-header">
             <div class="container">
@@ -27,20 +28,17 @@
                     <span class="icon-bar middle-bar"></span>
                     <span class="icon-bar bottom-bar"></span>
                 </button>
-                <a class="navbar-brand" href="#"><img src="/static/img/assets/logo-light.png" class="logo-light" alt="#"><img src="/static/img/assets/logo-dark.png" class="logo-dark" alt="#"></a>
+                <a class="navbar-brand" href="/"><img src="/static/img/assets/logo-light.png" class="logo-light" alt="#"><img src="/static/img/assets/logo-test.jpg" class="logo-dark" alt="#"></a>
             </div>
         </div>
         <div id="navbar" class="navbar-collapse collapse">
             <div class="container">
                 <ul class="nav navbar-nav menu-right">
-                    <li><a href="/">Home</a></li>
-                    <li><a href="/about-us">About Us</a></li>
-                    <li><a href="/contact">Contact Us</a></li>
+                    <li><a class="menu-item-custom" href="/">Tata Cara Penggunaan</a></li>
+                    <li><a class="menu-item-custom" href="/about-us">Tentang Kami</a></li>
+                    <li><a class="menu-item-custom" href="/contact">Hubungi Kami</a></li>
                     <li class="nav-separator"></li>
-                    <li class="nav-icon"><a class="popup-with-zoom-anim search" href="#search-modal"><i class="flaticon-search"></i> <span class="hidden-md">Search</span></a></li>
-                    <li id="search-modal" class="zoom-anim-dialog mfp-hide"><form><input type="text" id="search-modal-input" placeholder=" Start typing to search..." autocomplete="off"></form></li>
-
-                    {% if current_user.is_authenticated %}
+                     {% if current_user.is_authenticated %}
                         <li class="dropdown adjust-pos top-menu-custom"><a class="dropdown-toggle">Hi, {{ current_user.name }}<i class="ti-angle-down"></i></a>
                             <ul class="dropdown-menu">
                                 <li><a href="/user/{{ current_user.id }}">My Profile</a></li>
@@ -49,15 +47,10 @@
                         </li>
 
                     {% else %}
-                        <li class="nav-icon dropdown adjust-pos nav-shop-cart">
-                            <a class="dropdown-toggle"><i class="ion-person"></i></a>
-                            <ul class="dropdown-menu">
-                                <li><a href="/login">Login</a></li>
-                                <li><a href="/register">Register</a></li>
-                            </ul>
-                        </li>
+                        <li class="top-login-btn" ><a href="/login">Login</a></li>
+                        <li class="nav-separator"></li>
+                        <li class="top-register-btn"><a href="/register">Register</a></li>
                     {% endif %}
-
 
                 </ul>
             </div>
