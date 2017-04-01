@@ -30,13 +30,13 @@
                     <div data-filter="*" class="cbp-filter-item-active cbp-filter-item">
                         All
                     </div>
-                    <div data-filter=".lifestyle" class="cbp-filter-item">
+                    <div data-filter=".surabaya" class="cbp-filter-item">
                         Surabaya
                     </div>
-                    <div data-filter=".travel" class="cbp-filter-item">
+                    <div data-filter=".jakarta" class="cbp-filter-item">
                         Jakarta
                     </div>
-                    <div data-filter=".wander" class="cbp-filter-item">
+                    <div data-filter=".others" class="cbp-filter-item">
                         Other Cities
                     </div>
                 </div>
@@ -56,7 +56,7 @@
            {% endwith %}
            <div class="blog-grid blog-columns cbp" id="blog-grid">
             {% for post in posts %}
-            <div class="cbp-item wander lifestyle">
+            <div class="cbp-item wander {{post.city.name}}">
                 <div class="post-date">
                     <h4 class="month">{{post.d_tod}}</h4>
                 </div>

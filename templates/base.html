@@ -34,12 +34,13 @@
         <div id="navbar" class="navbar-collapse collapse">
             <div class="container">
                 <ul class="nav navbar-nav menu-right">
-                    <li><a class="menu-item-custom" href="/">Tata Cara Penggunaan</a></li>
+                    <li><a class="menu-item-custom" href="/pusat-berita-kematian">Pusat Berita</a></li>
+                    <li><a class="menu-item-custom" href="/cara-penggunaan">Tata Cara Penggunaan</a></li>
                     <li><a class="menu-item-custom" href="/about-us">Tentang Kami</a></li>
                     <li><a class="menu-item-custom" href="/contact">Hubungi Kami</a></li>
                     <li class="nav-separator"></li>
                      {% if current_user.is_authenticated %}
-                        <li class="dropdown adjust-pos top-menu-custom"><a class="dropdown-toggle">Hi, {{ current_user.name }}<i class="ti-angle-down"></i></a>
+                        <li class="dropdown adjust-pos top-menu-custom"><a class="dropdown-toggle">Hi,<strong> {{ current_user.name }}</strong><i class="ti-angle-down"></i></a>
                             <ul class="dropdown-menu">
                                 <li><a href="/user/{{ current_user.id }}">My Profile</a></li>
                                 <li><a href="/logout">Logout</a></li>

@@ -16,6 +16,11 @@ class User(Base, UserMixin):
     picture = Column(String(250))
     member_since = Column(String(250))
 
+class City(Base):
+    __tablename__ = 'city'
+    id = Column(Integer, primary_key=True)
+    name = Column(String(250), nullable=False)
+
 class Post(Base):
     __tablename__ = 'post'
 
@@ -31,6 +36,8 @@ class Post(Base):
     obituary = Column(String(250))
     user_id = Column(Integer, ForeignKey('user.id'))
     user = relationship(User)
+    city_id = Column(Integer, ForeignKey('city.id'))
+    city = relationship(City)
 
 class Family(Base):
     __tablename__ = 'family'
@@ -59,6 +66,13 @@ class Comment(Base):
     user_id = Column(Integer, ForeignKey('user.id'))
     user = relationship(User)
     date_posted = Column(String(250), nullable=False)
+
+class Mortuary(Base):
+    __tablename__ = 'mortuary'
+    id = Column(Integer, primary_key=True)
+    name = Column(String(250), nullable=False)
+    city_id = Column(Integer, ForeignKey('city.id'))
+    city = relationship(City)
 
 engine = create_engine('mysql://obitsy:Kiasu123@localhost/obitsy_db')
 
