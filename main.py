@@ -136,7 +136,7 @@ def createAds(post_id, user_id):
 
 @login_manager.user_loader
 def load_user(user_id):
-    dbsession.rollback()
+    dbsession.flush()
     user = dbsession.query(User).get(int(user_id))
     return user
 
