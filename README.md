@@ -54,5 +54,7 @@ $>python main.py
 4. You can get data of all posts at /getAllPostJson
 5. You can also get specific data of any post via /getPostJson/<post_id>
 6. You can only access once you are logged in
+```
+
 ##Authors
 * **Andree Wijaya**
