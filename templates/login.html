@@ -35,8 +35,67 @@
                     </div>
                     <input type="submit" class="btn btn-dark btn-fullwidth" id="submit" value="Login" />
                 </form>
+                <button class="btn btn-dark btn-fullwidth" id="googleSigninButton">Sign In With Google</button>
+                <div id="result"></div>
             </div>
         </div>
     </div>
 </section>
+
+<script>
+  $('#googleSigninButton').click(function() {
+
+
+    auth2.grantOfflineAccess({'redirect_uri': 'postmessage'}).then(signInCallback);
+  });
+</script>
+
+<script>
+function signInCallback(json) {
+  console.log('inside callback fuction');
+  console.log(json);
+    //authResult = JSON.parse(json);
+  authResult = json;
+  if (authResult['code']) {
+    // Hide the sign-in button now that the user is authorized, for example:
+    $('#googleSigninButton').attr('style', 'display: none');
+      $('#result').html('One-Time Auth Code:</br>'+ authResult['code'] + '')
+    // Send the code to the server
+    $.ajax({
+      type: 'POST',
+      url: '/oauth/google',
+      processData: false,
+      data: authResult['code'],
+      contentType: 'application/octet-stream; charset=utf-8',
+      success: function(result) {
+        // Handle or verify the server response if necessary.
+        if (result) {
+          $('#result').html('Login Successful!</br>')
+          location.href = '/'
+        } else if (authResult['error']) {
+          console.log('There was an error: ' + authResult['error']);
+        } else {
+          $('#result').html('Failed to make a server-side call. Check your configuration and console.');
+        }
+      }
+    });
+  }
+}
+</script>
+
+<script>
+    var auth2;
+    gapi.load('auth2', function() {
+        auth2 = gapi.auth2.init();
+    });
+    function onSignIn() {
+        var profile = auth2.currentUser.get().getBasicProfile();
+        console.log('User logged in.');
+        console.log('ID:', profile.getId());
+        console.log('Name:', profile.getName());
+        console.log('Image URL:', profile.getImageUrl());
+        console.log('Email:', profile.getEmail());
+    } -->
+</script>
+<!--END GOOGLE SIGN IN CODE -->
 {% endblock %}

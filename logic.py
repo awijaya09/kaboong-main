@@ -1,16 +1,18 @@
+#Serves as the controller to the model and database
+
 import hmac
 import os
 import hashlib
-import time
+import time, datetime
 from urlparse import urlparse, urljoin
-from flask import request, url_for, render_template, redirect
+from flask import request, url_for, render_template, redirect, jsonify
 from flask_login import login_user
 
 from sqlalchemy import create_engine, asc
 from sqlalchemy.sql import text
 from sqlalchemy.orm import sessionmaker
-from database_setup import Base, User, Post, Ads, Family, Comment
-engine = create_engine('mysql://obitsy:Kiasu123@localhost/obitsy_db', echo=True)
+from database_setup import Base, User, Post, Ads, Family, Comment, City
+engine = create_engine('mysql://obitsy:kiasu123@localhost/obitsy_db', echo=True)
 Base.metadata.bind = engine
 DBSession = sessionmaker(bind=engine)
 dbsession = DBSession()
@@ -32,6 +34,83 @@ def is_safe_url(target):
 
 def get_all_posts():
     return dbsession.query(Post).all()
+
+def getAllPosts():
+    posts = dbsession.query(Post).all()
+    return jsonify(Posts=[i.serialize for i in posts])
+
+def getPostJson(post_id):
+    post = get_post_byID(post_id)
+    return jsonify(Post= post.serialize)
+
+def get_post_byID(post_id):
+    return dbsession.query(Post).filter_by(id=post_id).one()
+
+def get_post_by_user(user):
+    posts = dbsession.query(Post).filter_by(user=user).all()
+    return posts
+
+def get_user(user_id):
+    dbsession.rollback()
+    user = dbsession.query(User).get(int(user_id))
+    return user
+
+def get_user_from_email(email):
+    user = dbsession.query(User).get(email)
+    return user
+
+def create_city(city):
+    newCity = City(name=city)
+    dbsession.add(newCity)
+    dbsession.commit()
+    return newCity
+
+def check_city(city):
+    find_city = dbsession.query(City).filter_by(name=city).one()
+
+    if find_city:
+        print "City found: %s" % find_city
+        return find_city
+
+    else:
+        newCity = create_city(city)
+        return newCity
+
+def create_new_post(name, age, tod, resting_at, burried_at, burried_date, picture, obituary, user, city):
+    todayDate = datetime.date.today()
+    formattedDate = todayDate.strftime('%d-%b-%Y')
+    cur_user = get_user(user.id)
+    newPost = Post(date_created=formattedDate, d_name=name, d_age=age, d_tod=tod,
+                    d_resting_at=resting_at,
+                    d_burried_at=burried_at,
+                    d_burried_date=burried_date,
+                    picture=picture,
+                    obituary=obituary,
+                    user=cur_user,
+                    city=city)
+    dbsession.add(newPost)
+    dbsession.commit()
+    return newPost
+
+def update_post(post_id, name, age, tod, resting_at, burried_at, burried_date, picture, obituary, user, city):
+    post = get_post_byID(post_id)
+    post.d_name = name
+    post.d_age = age
+    post.d_tod = tod
+    post.d_resting_at = resting_at
+    post.d_burried_date = burried_date
+    post.d_burried_at = burried_at
+    post.picture = picture
+    post.obituary = obituary
+    post.city = city
+    dbsession.commit()
+    return post
+
+def delete_post(post_id):
+    post = get_post_byID(post_id)
+    dbsession.commit()
+    dbsession.delete(post)
+    dbsession.commit()
 
 def process_login(email, password, remember):
         if email and password:

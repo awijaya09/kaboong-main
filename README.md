@@ -17,6 +17,7 @@ To start using this project, on your server, run:
 3. sudo pip install flask
 4. sudo pip install SQLAlchemy
 5. sudo pip install MySQL-python
+6. sudo pip install oauth2client
 ```
 
 To install MySQL :
@@ -32,7 +33,7 @@ mysql> CREATE DATABASE database_name CHARSET UTF8;
 mysql> GRANT ALL PRIVILEGES ON database_name.* TO "user"@"localhost" IDENTIFIED BY "password";
 mysql> \q
 ```
-Update your database name 
+Update your database name
 To start the project:
 1. Navigate to the project directory and run
 ```
@@ -40,13 +41,10 @@ $>python database_setup.py
 $>python testData1.py
 ```
 2. Database and initial input will be inserted into the db
-3. Start the project 
+3. Start the project
 ```
 $>python main.py
 ```
 
-
-### Online Version
-The project is accessible on my private server : http://188.166.188.203/
 ##Authors
 * **Andree Wijaya**

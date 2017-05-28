@@ -39,6 +39,18 @@ class Post(Base):
     city_id = Column(Integer, ForeignKey('city.id'))
     city = relationship(City)
 
+    @property
+    def serialize(self):
+        return {
+            'name': self.d_name,
+            'id': self.id,
+            'age': self.d_age,
+            'resting at': self.d_resting_at,
+            'burried at': self.d_burried_at,
+            'obituary': self.obituary,
+            'pictureUrl': self.picture
+        }
+
 class Family(Base):
     __tablename__ = 'family'
     id = Column(Integer, primary_key=True)
@@ -74,6 +86,6 @@ class Mortuary(Base):
     city_id = Column(Integer, ForeignKey('city.id'))
     city = relationship(City)
 
-engine = create_engine('mysql://obitsy:Kiasu123@localhost/obitsy_db')
+engine = create_engine('mysql://obitsy:kiasu123@localhost/obitsy_db')
 
 Base.metadata.create_all(engine)

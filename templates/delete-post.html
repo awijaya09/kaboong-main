@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="pt100 pb90">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-3"></div>
+            <div class="contact col-md-6">
+                <div class="custom-page-title mb90">
+                    <h3>Hapus Berita</h3>
+                </div>
+                <div id="message">
+                    {% with messages = get_flashed_messages() %}
+                        {% if messages %}
+                            {% for message in messages %}
+                                {{ message | safe }}
+                            {% endfor %}
+                        {% endif %}
+                    {% endwith %}
+                </div>
+                {{ alert | safe }}
+                <!-- Contact Form will be functional only on your server. Upload to your server when testing. -->
+                <form method="post" name="loginform" id="loginform" enctype="multipart/form-data">
+                    <div class="form-group">
+                        <div class="col-sm-8">
+                        <p>Apakah Anda ingin menghapus posting saudara {{post.d_name}}?</p>
+                        </div>
+                    </div>
+                    <a href="/post/{{post.id}}" class="btn btn-lg btn-ghost btn-circle btn-appear"><span>Cancel</span></a>
+                    <input type="submit" class="input-custom btn btn-lg btn-ghost btn-circle btn-appear" id="submit" value="Yes" />
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

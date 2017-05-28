@@ -42,6 +42,19 @@
     width:20px !important;
 }
 
+.custom-input {
+    margin:0 !important;
+    padding: 7px 4px !important;
+}
+
+.custom-label {
+    padding-top:10px !important;
+}
+
+.input-custom {
+    width:33% !important;
+}
+
 @media (min-width: 992px) {
     .top-login-btn{
         min-width: 100px;
@@ -1821,6 +1834,10 @@ a:hover .subheading {
     }
     .text-center-sm-xs {
         text-align: center;
+    }
+
+    .form-group{
+        padding-bottom:10px !important;
     }
 }
 @media (min-width: 768px) and (max-width: 991px) {

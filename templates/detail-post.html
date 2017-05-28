@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="shop-product">
+            <div class="container">
+                <div class="row">
+
+                    <div class="col-sm-6 mt40 mb40">
+
+                        <div class="shop-product-slider owl-carousel navigation-thin dark-pagination pagination-in">
+                            <div><img src="..{{post.picture}}" class="img-responsive width80" alt="#"></div>
+                        </div>
+
+                    </div>
+
+                    <div class="col-sm-6 mt40 mb40 product-details">
+                        <h2>{{post.d_name}}</h2>
+                        <h4>{{post.d_resting_at}}</h4>
+                        <p>{{post.obituary}}</p>
+
+                        <!-- Accordion Style 3 -->
+                        <div class="panel-group accordian-style4" id="accordion">
+                            <!-- First Panel -->
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                     <button class="panel-title" data-toggle="collapse" data-target="#collapse41">
+                                         Personal Data
+                                     </button>
+                                </div>
+                                <div id="collapse41" class="panel-collapse collapse in">
+                                    <div class="panel-body">
+                                       <ul>
+                                           <li>Age: <strong>{{post.d_age}}</strong></li>
+                                           <li>Waktu kematian: <strong>{{post.d_tod}}</strong></li>
+                                           <li>Rumah Duka:<strong> {{post.d_resting_at}}</strong></li>
+                                           <li>Persemayaman: <strong>{{post.d_burried_at}}</strong></li>
+                                       </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- End Accordion Style 3 -->
+                        {% if user %}
+                            {{edit | safe}}
+                            {{delete | safe}}
+                        {% endif %}
+                    </div>
+
+                </div>
+            </div>
+        </section>
+{% endblock %}

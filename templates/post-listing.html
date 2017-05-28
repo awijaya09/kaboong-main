@@ -5,56 +5,60 @@
     <div class="container-fluid">
         <div class="row">
             <div class="custom-page-title mt80">
-                  <h3>Semua Berita Duka</h3>
-            </div>
-            <div class="mt10 portfolio-filters-center cbp-l-filters-button" id="js-filters">
-                <div data-filter="*" class="cbp-filter-item-active cbp-filter-item">
-                    All
-                </div>
-                <div data-filter=".surabaya" class="cbp-filter-item">
-                    Surabaya
-                </div>
-                <div data-filter=".jakarta" class="cbp-filter-item">
-                    Jakarta
-                </div>
-                <div data-filter=".other" class="cbp-filter-item">
-                    Other Cities
-                </div>
+                <h3>Semua Berita Duka</h3>
+                <form method="post" id="subscribe-form2">
+                    <a href="/newpost" class="btn btn-lg btn-ghost btn-circle btn-appear"><span>Tambah Berita<i class="ion-plus"></i></span></a>
+                </form>
             </div>
 
-            <div class="mt0 blog-grid blog-columns cbp" id="blog-grid">
-                {% for post in posts %}
-                    <div class="cbp-item {{post.city.name}}">
-                        <div class="post-date">
-                            <h4 class="month">{{post.d_tod}}</h4>
-                        </div>
-                        <a href="/post/{{post.id}}" class="cbp-caption">
-                            <div class="cbp-caption-defaultWrap">
-                                <img src="{{post.picture}}" alt="{{post.d_name}}">
+        <div class="mt10 portfolio-filters-center cbp-l-filters-button" id="js-filters">
+            <div data-filter="*" class="cbp-filter-item-active cbp-filter-item">
+                All
+            </div>
+            <div data-filter=".surabaya" class="cbp-filter-item">
+                Surabaya
+            </div>
+            <div data-filter=".jakarta" class="cbp-filter-item">
+                Jakarta
+            </div>
+            <div data-filter=".other" class="cbp-filter-item">
+                Other Cities
+            </div>
+        </div>
+
+        <div class="mt0 blog-grid blog-columns cbp" id="blog-grid">
+            {% for post in posts %}
+            <div class="cbp-item {{post.city.name}}">
+                <div class="post-date">
+                    <h4 class="month">{{post.d_tod}}</h4>
+                </div>
+                <a href="/post/{{post.id}}" class="cbp-caption">
+                    <div class="cbp-caption-defaultWrap">
+                        <img src="{{post.picture}}" alt="{{post.d_name}}">
+                    </div>
+                    <div class="cbp-caption-activeWrap">
+                        <div class="cbp-l-caption-alignCenter">
+                            <div class="cbp-l-caption-body">
+                                <div class="cbp-l-caption-desc"><i class="ion-android-more-horizontal"></i></div>
                             </div>
-                            <div class="cbp-caption-activeWrap">
-                                <div class="cbp-l-caption-alignCenter">
-                                    <div class="cbp-l-caption-body">
-                                        <div class="cbp-l-caption-desc"><i class="ion-android-more-horizontal"></i></div>
-                                    </div>
-                                </div>
-                            </div>
-                        </a>
-                        <div class="blog-thumb-desc">
-                            <a class="link-to-post" href="/post/{{post.id}}"><h4>{{post.d_name}}</h4></a>
-                            <p class="blog-post-categories">
-                                <span><i class="ion-ios-pricetags-outline"></i></span>
-                                <a href="#">Age: <strong>{{post.d_age}}</strong></a>
-                                <span>| {{post.d_resting_at}}</span>
-                            </p>
-                            <p class="excerpt">{{post.obituary}}</p>
-                            <a class="read-more-link btn-appear" href="blog-post-carousel.html"><span>Read More <i class="ion-android-arrow-forward"></i></span></a>
                         </div>
                     </div>
-                {% endfor %}
+                </a>
+                <div class="blog-thumb-desc">
+                    <a class="link-to-post" href="/post/{{post.id}}"><h4>{{post.d_name}}</h4></a>
+                    <p class="blog-post-categories">
+                        <span><i class="ion-ios-pricetags-outline"></i></span>
+                        <a href="#">Age: <strong>{{post.d_age}}</strong></a>
+                        <span>| {{post.d_resting_at}}</span>
+                    </p>
+                    <p class="excerpt">{{post.obituary}}</p>
+                    <a class="read-more-link btn-appear" href="blog-post-carousel.html"><span>Read More <i class="ion-android-arrow-forward"></i></span></a>
+                </div>
+            </div>
+            {% endfor %}
 
 
-         </div>
-     </div>
- </section>
- {% endblock %}
+        </div>
+    </div>
+</section>
+{% endblock %}
