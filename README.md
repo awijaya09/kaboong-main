@@ -46,5 +46,13 @@ $>python testData1.py
 $>python main.py
 ```
 
+### How to Use the Platform
+```
+1. Start Posting by registering or Login
+2. You can use Google Account to Register or Login
+3. Start Posting by Going to Post Page
+4. You can get data of all posts at /getAllPostJson
+5. You can also get specific data of any post via /getPostJson/<post_id>
+6. You can only access once you are logged in
 ##Authors
 * **Andree Wijaya**
