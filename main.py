@@ -93,12 +93,16 @@ def createUser():
 @login_required
 def userProfile(user_id):
         user = get_user(user_id)
-        if current_user.id == user.id:
-            posts = get_post_by_user(user)
-            return render_template('user-profile.html', user=user, posts=posts)
+        if user:
+            if current_user.id == user.id:
+                posts = get_post_by_user(user)
+                return render_template('user-profile.html', user=user, posts=posts)
+            else:
+                successmsg = "Sorry, you are not authorized to open other's profile"
+                flash(render_template('success.html', successmsg=successmsg))
+                return redirect(url_for('main'))
         else:
-            successmsg = "Sorry, you are not authorized to open other's profile"
-            flash(render_template('success.html', successmsg=successmsg))
+            flash(render_template('alert.html', errormsg="Sorry, no user with that ID!"))
             return redirect(url_for('main'))
 
 @app.route('/user/<int:user_id>/edit')
@@ -121,43 +125,48 @@ def uploaded_file(filename):
     return send_from_directory(app.config['UPLOAD_FOLDER'], filename)
 
 @app.route('/newpost', methods=['GET', 'POST'])
+@login_required
 def createNewPost():
     if request.method == 'POST':
-        name = request.form['name']
-        age = request.form['age']
-        tod = request.form['tod']
-        rumahduka = request.form['rumahduka']
-        tos = request.form['tos']
-        semayam = request.form['semayam']
-        beritaduka = request.form['obituary']
+        if not current_user.is_anonymous:
+            name = request.form['name']
+            age = request.form['age']
+            tod = request.form['tod']
+            rumahduka = request.form['rumahduka']
+            tos = request.form['tos']
+            semayam = request.form['semayam']
+            beritaduka = request.form['obituary']
 
-        #validating input from user
-        city = request.form['city']
-        if city:
-            curCity = check_city(city)
-            print "Files inside request: %s" % request.files
-            if 'pict' not in request.files:
-                flash(render_template('alert.html', errormsg="Picture not in request files"))
-                return redirect(request.url)
-            else:
-                pict = request.files['pict']
-                if pict.filename == '':
-                    flash(render_template('alert.html', errormsg="Please input Picture"))
+            #validating input from user
+            city = request.form['city']
+            if city:
+                curCity = check_city(city)
+                print "Files inside request: %s" % request.files
+                if 'pict' not in request.files:
+                    flash(render_template('alert.html', errormsg="Picture not in request files"))
                     return redirect(request.url)
+                else:
+                    pict = request.files['pict']
+                    if pict.filename == '':
+                        flash(render_template('alert.html', errormsg="Please input Picture"))
+                        return redirect(request.url)
 
-                if pict and allowed_file(pict.filename):
-                    filename = secure_filename(pict.filename)
-                    savedPath = os.path.join(app.config['UPLOAD_FOLDER'], filename)
-                    pict.save(savedPath)
-                    pict_url = url_for('uploaded_file', filename=filename)
-                    print "pict url : %s" % pict_url
-                    newPost = create_new_post(name, age, tod, rumahduka, semayam, tos, pict_url, beritaduka, current_user,curCity)
+                    if pict and allowed_file(pict.filename):
+                        filename = secure_filename(pict.filename)
+                        savedPath = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+                        pict.save(savedPath)
+                        pict_url = url_for('uploaded_file', filename=filename)
+                        print "pict url : %s" % pict_url
+                        newPost = create_new_post(name, age, tod, rumahduka, semayam, tos, pict_url, beritaduka, current_user,curCity)
 
-                    return redirect('post/%s' % newPost.id)
-        #return an error with explaination if form is wrongly submitted
+                        return redirect('post/%s' % newPost.id)
+            #return an error with explaination if form is wrongly submitted
+            else:
+                flash(render_template('alert.html', errormsg="Error in getting City"))
+                return render_template('new-post.html')
         else:
-            flash(render_template('alert.html', errormsg="Error in getting City"))
-            return render_template('new-post.html')
+            flash(render_template('alert.html', errormsg="Please sign in to start posting"))
+            return render_template('/')
 
     else:
         return render_template('new-post.html')
@@ -178,44 +187,49 @@ def getSinglePost(post_id):
 @app.route('/post/<int:post_id>/edit', methods=['GET', 'POST'])
 @login_required
 def editPost(post_id):
+    post = get_post_byID(post_id)
     if request.method == 'POST':
-        name = request.form['name']
-        age = request.form['age']
-        tod = request.form['tod']
-        rumahduka = request.form['rumahduka']
-        tos = request.form['tos']
-        semayam = request.form['semayam']
-        beritaduka = request.form['obituary']
+        #check if the user is currently authorized to edit
+        if post.user_id == current_user.id:
+            name = request.form['name']
+            age = request.form['age']
+            tod = request.form['tod']
+            rumahduka = request.form['rumahduka']
+            tos = request.form['tos']
+            semayam = request.form['semayam']
+            beritaduka = request.form['obituary']
 
-        #validating input from user
-        city = request.form['city']
-        if city:
-            curCity = check_city(city)
-            print "Files inside request: %s" % request.files
-            if 'pict' not in request.files:
-                flash(render_template('alert.html', errormsg="Picture not in request files"))
-                return redirect(request.url)
-            else:
-                pict = request.files['pict']
-                if pict.filename == '':
-                    flash(render_template('alert.html', errormsg="Please input Picture"))
+            #validating input from user
+            city = request.form['city']
+            if city:
+                curCity = check_city(city)
+                print "Files inside request: %s" % request.files
+                if 'pict' not in request.files:
+                    flash(render_template('alert.html', errormsg="Picture not in request files"))
                     return redirect(request.url)
+                else:
+                    pict = request.files['pict']
+                    if pict.filename == '':
+                        flash(render_template('alert.html', errormsg="Please input Picture"))
+                        return redirect(request.url)
 
-                if pict and allowed_file(pict.filename):
-                    filename = secure_filename(pict.filename)
-                    savedPath = os.path.join(app.config['UPLOAD_FOLDER'], filename)
-                    pict.save(savedPath)
-                    pict_url = url_for('uploaded_file', filename=filename)
-                    print "pict url : %s" % pict_url
-                    newPost = update_post(post_id, name, age, tod, rumahduka, semayam, tos, pict_url, beritaduka, current_user,curCity)
+                    if pict and allowed_file(pict.filename):
+                        filename = secure_filename(pict.filename)
+                        savedPath = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+                        pict.save(savedPath)
+                        pict_url = url_for('uploaded_file', filename=filename)
+                        print "pict url : %s" % pict_url
+                        newPost = update_post(post_id, name, age, tod, rumahduka, semayam, tos, pict_url, beritaduka, current_user,curCity)
 
-                    return redirect('post/%s' % newPost.id)
-        #return an error with explaination if form is wrongly submitted
+                        return redirect('post/%s' % newPost.id)
+            #return an error with explaination if form is wrongly submitted
+            else:
+                flash(render_template('alert.html', errormsg="Error in getting City"))
+                return render_template('new-post.html')
         else:
-            flash(render_template('alert.html', errormsg="Error in getting City"))
-            return render_template('new-post.html')
+            flash(render_template('alert.html', errormsg ="You can't edit the post!"))
+            return redirect('/')
     else:
-        post = get_post_byID(post_id)
         if post.user_id == current_user.id:
             return render_template('edit-post.html', post=post)
         else:
@@ -226,12 +240,16 @@ def editPost(post_id):
 @app.route('/post/<int:post_id>/delete', methods=['GET', 'POST'])
 @login_required
 def deletePost(post_id):
+    post = get_post_byID(post_id)
     if request.method == 'POST':
-        delete_post(post_id)
-        flash(render_template('success.html', successmsg="Post successfully deleted!"))
-        return redirect('/')
+        if post.user_id == current_user.id:
+            delete_post(post_id)
+            flash(render_template('success.html', successmsg="Post successfully deleted!"))
+            return redirect('/')
+        else:
+            flash(render_template('alert.html', errormsg ="You can't edit the post!"))
+            return redirect('/')
     else:
-        post = get_post_byID(post_id)
         if post.user_id == current_user.id:
             return render_template('delete-post.html', post=post)
         else:
