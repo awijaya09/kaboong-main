@@ -3,7 +3,7 @@ from sqlalchemy.orm import sessionmaker
 
 from database_setup import Base, User, Post, Comment, Family, Ads, City
 from logic import hash_str
-engine = create_engine('mysql://kaboon:Kiasu123@localhost/kaboong_db')
+engine = create_engine('mysql://kaboon:kiasu123@localhost/kaboong_db')
 # Bind the engine to the metadata of the Base class so that the
 # declaratives can be accessed through a DBSession instance
 Base.metadata.bind = engine
