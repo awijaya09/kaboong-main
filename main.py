@@ -63,7 +63,7 @@ def contactUs():
 
 
 # Routes to login user
-@app.route('/login', methods=['GET', ß'POST'])
+@app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
         email = request.form['email']
