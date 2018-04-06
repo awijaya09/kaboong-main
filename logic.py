@@ -13,7 +13,7 @@ from sqlalchemy import create_engine, asc
 from sqlalchemy.sql import text
 from sqlalchemy.orm import sessionmaker
 from database_setup import Base, User, Post, Ads, Family, Comment, City
-engine = create_engine('mysql://obitsy:kiasu123@localhost/obitsy_db', echo=True)
+engine = create_engine('mysql://kaboon:kiasu123@localhost/kaboong_db', echo=True)
 Base.metadata.bind = engine
 DBSession = sessionmaker(bind=engine)
 dbsession = DBSession()
