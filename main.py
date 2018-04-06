@@ -1,15 +1,6 @@
-from flask import Flask, render_template, request, jsonify,
-            redirect, url_for, flash, abort, session,
-            get_flashed_messages, send_from_directory
-
-from flask_login import LoginManager, login_required,
-            login_user, logout_user, current_user
-
-from logic import SECRET, is_safe_url, process_login,
-            register_user, show_error, get_all_posts,
-            check_city, create_new_post, get_user,
-            get_post_by_user, get_post_byID, delete_post, update_post,
-            getAllPosts, getPostJson, get_user_from_email
+from flask import Flask, render_template, request, jsonify, redirect, url_for, flash, abort, session, get_flashed_messages, send_from_directory
+from flask_login import LoginManager, login_required, login_user, logout_user, current_user
+from logic import SECRET, is_safe_url, process_login,register_user, show_error, get_all_posts, check_city, create_new_post, get_user, get_post_by_user, get_post_byID, delete_post, update_post, getAllPosts, getPostJson, get_user_from_email
 import random
 import string
 import os
