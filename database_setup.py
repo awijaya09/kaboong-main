@@ -86,6 +86,6 @@ class Mortuary(Base):
     city_id = Column(Integer, ForeignKey('city.id'))
     city = relationship(City)
 
-engine = create_engine('mysql://obitsy:kiasu123@localhost/obitsy_db')
+engine = create_engine('mysql://kaboon:kiasu123@localhost/kaboong_db')
 
 Base.metadata.create_all(engine)
